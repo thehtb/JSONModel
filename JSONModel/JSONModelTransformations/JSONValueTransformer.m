@@ -70,6 +70,37 @@ extern BOOL isNull(id value)
     return sourceClass;
 }
 
++ (NSArray *)supportedJSONTypes
+{
+    static NSArray* supportedJSONTypes = nil;
+
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        supportedJSONTypes = @[
+                             [NSString class], [NSNumber class], [NSArray class], [NSDictionary class], [NSNull class], //immutable JSON classes
+                             [NSMutableString class], [NSMutableArray class], [NSMutableDictionary class] //mutable JSON classes
+                             ];
+    });
+    
+    return supportedJSONTypes;
+}
+
++ (NSArray *)supportedPrimitiveTypes
+{
+    static NSArray* supportedPrimitiveTypes = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        supportedPrimitiveTypes = @[
+                                    @"BOOL", @"float", @"int", @"long", @"double", @"short",
+                                    //and some famous aliases
+                                    @"NSInteger", @"NSUInteger"
+                                    ];
+    });
+    
+    return supportedPrimitiveTypes;
+}
+
 #pragma mark - NSMutableString <-> NSString
 -(NSMutableString*)NSMutableStringFromNSString:(NSString*)string
 {

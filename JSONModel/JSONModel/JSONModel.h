@@ -125,6 +125,14 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
  */
 @interface JSONModel : NSObject <AbstractJSONModelProtocol>
 
+/**
+ * The value transformer class to use. Defaults to JSONValueTransformer.
+ *
+ * You probably won't want to override this. If you do, ensure your class
+ * is either a subclass of JSONValueTransformer or behaves exactly like it.
+ */
++ (Class)valueTransformerClass;
+
 /** @name Creating and initializing models */
 
   /**
