@@ -1,3 +1,14 @@
+## The High Technology Bureau's FORK of JSONModel
+
+At The Bureau we love JSONModel's declaritive approach to object modelling, but we also love Plist file's
+native support for NSDate's and NSValue's etc. The main JSONModel repository lacks a few simple extensibility
+options required to specify that a particular data source supports more data types than JSON. It also,
+unrelatedly, lacks support for extending serialisation to other types.
+
+JSONModel's author, Marin Todorov, quite reasonably wants to keep the root repository focussed on JSON and so
+we have begun maintaining this separate fork. This fork works identically to version 0.9.1 of JSONModel, with
+some extra features which are documentd in the headers. An updated Readme is in the works :)
+
 ## Magical Data Modelling Framework for JSON
 
 ![JSONModel for iOS and OSX](http://jsonmodel.com/img/jsonmodel_logolike.png)
