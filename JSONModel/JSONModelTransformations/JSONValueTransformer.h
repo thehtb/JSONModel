@@ -43,6 +43,17 @@ extern BOOL isNull(id value);
  */
 @interface JSONValueTransformer : NSObject
 
+/**
+ * The list of primitive types that this transformer class knows how to convert to JSON.
+ */
++ (NSArray *)supportedPrimitiveTypes;
+
+/**
+ * The list of JSON file types that this transformer class knows how to convert into model
+ * properties.
+ */
++ (NSArray *)supportedJSONTypes;
+
 @property (strong, nonatomic, readonly) NSDictionary* primitivesNames;
 
 /** @name Resolving cluster class names */

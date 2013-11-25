@@ -31,42 +31,19 @@ static const char * kClassPropertiesKey;
 static const char * kClassRequiredPropertyNamesKey;
 static const char * kIndexPropertyNameKey;
 
-#pragma mark - class static variables
-static NSArray* allowedJSONTypes = nil;
-static NSArray* allowedPrimitiveTypes = nil;
-static JSONValueTransformer* valueTransformer = nil;
-
 #pragma mark - model cache
 static JSONKeyMapper* globalKeyMapper = nil;
+
+@interface JSONModel ()
+
++ (JSONValueTransformer *)valueTransformer;
+
+@end
 
 #pragma mark - JSONModel implementation
 @implementation JSONModel
 
 #pragma mark - initialization methods
-
-+(void)load
-{
-    static dispatch_once_t once;
-    dispatch_once(&once, ^{
-        // initialize all class static objects,
-        // which are common for ALL JSONModel subclasses
-        
-		@autoreleasepool {
-            allowedJSONTypes = @[
-                [NSString class], [NSNumber class], [NSArray class], [NSDictionary class], [NSNull class], //immutable JSON classes
-                [NSMutableString class], [NSMutableArray class], [NSMutableDictionary class] //mutable JSON classes
-            ];
-            
-            allowedPrimitiveTypes = @[
-                @"BOOL", @"float", @"int", @"long", @"double", @"short",
-                //and some famous aliases
-                @"NSInteger", @"NSUInteger"
-            ];
-            
-            valueTransformer = [[JSONValueTransformer alloc] init];
-		}
-    });
-}
 
 -(void)__setup__
 {
@@ -207,6 +184,8 @@ static JSONKeyMapper* globalKeyMapper = nil;
     incomingKeys= nil;
     requiredProperties= nil;
     
+    NSArray * allowedJSONTypes = [JSONValueTransformer supportedJSONTypes];
+    
     //loop over the incoming keys and set self's properties
     for (JSONModelClassProperty* property in [self __properties__]) {
 
@@ -346,13 +325,13 @@ static JSONKeyMapper* globalKeyMapper = nil;
                     SEL selector = NSSelectorFromString(selectorName);
                     
                     //check if there's a transformer with that name
-                    if ([valueTransformer respondsToSelector:selector]) {
+                    if ([[[self class] valueTransformer] respondsToSelector:selector]) {
                         
                         //it's OK, believe me...
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
                         //transform the value
-                        jsonValue = [valueTransformer performSelector:selector withObject:jsonValue];
+                        jsonValue = [[[self class] valueTransformer] performSelector:selector withObject:jsonValue];
 #pragma clang diagnostic pop
                         
                         [self setValue:jsonValue forKey: property.name];
@@ -386,6 +365,24 @@ static JSONKeyMapper* globalKeyMapper = nil;
     
     //model is valid! yay!
     return self;
+}
+
++ (Class)valueTransformerClass
+{
+    return [JSONValueTransformer class];
+}
+
++ (JSONValueTransformer *)valueTransformer
+{
+    static JSONValueTransformer * _valueTransformer;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        Class valueTransformerClass = [self valueTransformerClass];
+        _valueTransformer = (JSONValueTransformer *)[[valueTransformerClass alloc] init];
+    });
+
+    return _valueTransformer;
 }
 
 #pragma mark - property inspection methods
@@ -438,6 +435,9 @@ static JSONKeyMapper* globalKeyMapper = nil;
     Class class = [self class];
     NSScanner* scanner = nil;
     NSString* propertyType = nil;
+    
+    NSArray * allowedJSONTypes = [JSONValueTransformer supportedJSONTypes];
+    NSArray * allowedPrimitiveTypes = [JSONValueTransformer supportedPrimitiveTypes];
     
     // inspect inherited properties up to the JSONModel class
     while (class != [JSONModel class]) {
@@ -530,7 +530,7 @@ static JSONKeyMapper* globalKeyMapper = nil;
                                         intoString:&propertyType];
                 
                 //get the full name of the primitive type
-                propertyType = valueTransformer.primitivesNames[propertyType];
+                propertyType = [[self class] valueTransformer].primitivesNames[propertyType];
                 
                 if (![allowedPrimitiveTypes containsObject:propertyType]) {
                     
@@ -873,12 +873,12 @@ static JSONKeyMapper* globalKeyMapper = nil;
                 SEL selector = NSSelectorFromString(selectorName);
                 
                 //check if there's a transformer declared
-                if ([valueTransformer respondsToSelector:selector]) {
+                if ([[[self class] valueTransformer] respondsToSelector:selector]) {
                     
                     //it's OK, believe me...
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                    value = [valueTransformer performSelector:selector withObject:value];
+                    value = [[[self class] valueTransformer] performSelector:selector withObject:value];
 #pragma clang diagnostic pop
                     
                     [tempDictionary setValue:value forKeyPath: keyPath];
