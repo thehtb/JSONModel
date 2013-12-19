@@ -133,6 +133,14 @@ lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
  */
 + (Class)valueTransformerClass;
 
+/**
+ * By default, if a non-optional property is nil, an NSNull will be placed in the dictionary output
+ * and serialised as a null in generated JSON. If this method returns YES for the model class in
+ * question, nil in required values will be considered a programmer error and raise an exception
+ * at serialising time.
+ */
++ (BOOL)nilAllowedForRequiredProperties;
+
 /** @name Creating and initializing models */
 
   /**

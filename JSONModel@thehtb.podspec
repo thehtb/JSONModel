@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "JSONModel@thehtb"
-  s.version      = "0.9"
+  s.version      = "0.9.1"
   s.summary      = "The High Technology Bureau FORK of JSONModel"
   s.description  =  "The High Technology Bureau FORK of JSONModel: Magical Data Modelling Framework for JSON. Create rapidly powerful, atomic and smart data model classes."
   s.homepage     = "https://github.com/thehtb/JSONModel"
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.authors      = { "Marin Todorov" => "touch-code-magazine@underplot.com",
                      "Mark Aufflick" => "mark@htb.io" }
 
-  s.source       = { :git => "https://github.com/thehtb/JSONModel.git", :tag => "v0.9@thehtb" }
+  s.source       = { :git => "https://github.com/thehtb/JSONModel.git", :tag => "v#{s.version}@thehtb" }
 
   s.ios.deployment_target = '5.0'
   s.osx.deployment_target = '10.7'

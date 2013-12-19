@@ -372,6 +372,11 @@ static JSONKeyMapper* globalKeyMapper = nil;
     return [JSONValueTransformer class];
 }
 
++ (BOOL)nilAllowedForRequiredProperties
+{
+    return YES;
+}
+
 + (JSONValueTransformer *)valueTransformer
 {
     static JSONValueTransformer * _valueTransformer;

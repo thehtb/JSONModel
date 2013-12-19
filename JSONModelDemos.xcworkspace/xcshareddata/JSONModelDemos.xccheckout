@@ -5,34 +5,34 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>F1CB0D04-5810-44AA-ACC3-73F7236294F6</string>
+	<string>7517315C-F610-4B1E-8E92-E02CDE22AC63</string>
 	<key>IDESourceControlProjectName</key>
 	<string>JSONModelDemos</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>6FA6FF39-A452-4320-85FD-A6F66B006D09</key>
-		<string>https://github.com/aufflick/JSONModel.git</string>
+		<key>C8632E64-37F4-4799-9E45-3FB4B25285B8</key>
+		<string>ssh://github.com/thehtb/JSONModel.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>JSONModelDemos.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>6FA6FF39-A452-4320-85FD-A6F66B006D09</key>
+		<key>C8632E64-37F4-4799-9E45-3FB4B25285B8</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/aufflick/JSONModel.git</string>
+	<string>ssh://github.com/thehtb/JSONModel.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>6FA6FF39-A452-4320-85FD-A6F66B006D09</string>
+	<string>C8632E64-37F4-4799-9E45-3FB4B25285B8</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>6FA6FF39-A452-4320-85FD-A6F66B006D09</string>
+			<string>C8632E64-37F4-4799-9E45-3FB4B25285B8</string>
 			<key>IDESourceControlWCCName</key>
 			<string>JSONModel</string>
 		</dict>
