@@ -802,6 +802,8 @@ static JSONKeyMapper* globalKeyMapper = nil;
     //get the key mapper
     JSONKeyMapper* keyMapper = objc_getAssociatedObject(self.class, &kMapperObjectKey);
     
+    BOOL nilAllowedForRequiredProperties = [[self class] nilAllowedForRequiredProperties];
+    
     //if no custom mapper, check for a global mapper
     if (keyMapper==nil && globalKeyMapper!=nil) keyMapper = globalKeyMapper;
 
@@ -837,10 +839,17 @@ static JSONKeyMapper* globalKeyMapper = nil;
             {
                 [tempDictionary removeObjectForKey:keyPath];
             }
-            else
+            else if (nilAllowedForRequiredProperties)
             {
                 [tempDictionary setValue:[NSNull null] forKeyPath:keyPath];
             }
+            else
+            {
+                [[NSException exceptionWithName:@"JSONModelNilNotAllowedForProperty"
+                                         reason:[NSString stringWithFormat:@"nil not allowed for required proprety %@", keyPath]
+                                       userInfo:@{@"object": self, @"keyPath": keyPath}] raise];
+            }
+            
             continue;
         }
         
