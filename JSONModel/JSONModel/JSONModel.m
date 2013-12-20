@@ -819,6 +819,8 @@ static JSONKeyMapper* globalKeyMapper = nil;
     //if no custom mapper, check for a global mapper
     if (keyMapper==nil && globalKeyMapper!=nil) keyMapper = globalKeyMapper;
     
+    JSONValueTransformer * valueTransformer = [[self class] valueTransformer];
+    
     //loop over all properties
     for (JSONModelClassProperty* p in properties) {
         
@@ -895,19 +897,27 @@ static JSONKeyMapper* globalKeyMapper = nil;
             if (YES) {
                 
                 //create selector from the property's class name
-                NSString* selectorName = [NSString stringWithFormat:@"%@From%@:", @"JSONObject", p.type?p.type:p.structName];
+                NSString* selectorName = [NSString stringWithFormat:@"JSONObjectFrom%@:", p.type?p.type:p.structName];
                 SEL selector = NSSelectorFromString(selectorName);
                 
-                //check if there's a transformer declared
-                if ([[[self class] valueTransformer] respondsToSelector:selector]) {
+                // prefer direct transformer method since it can deal with non-object values
+                NSString * directTransformerSelectorName = [NSString stringWithFormat:@"JSONObjectFrom%@Key:onObject:", p.type?p.type:p.structName];
+                SEL directTransformerSelector = NSSelectorFromString(directTransformerSelectorName);
+                
+                if ([valueTransformer respondsToSelector:directTransformerSelector])
+                {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+                    value = [valueTransformer performSelector:directTransformerSelector withObject:keyPath withObject:self];
+#pragma clang diagnostic pop
+                }
+                else if ([valueTransformer respondsToSelector:selector]) {
                     
                     //it's OK, believe me...
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                    value = [[[self class] valueTransformer] performSelector:selector withObject:value];
+                    value = [valueTransformer performSelector:selector withObject:value];
 #pragma clang diagnostic pop
-                    
-                    [tempDictionary setValue:value forKeyPath: keyPath];
                     
                 } else {
                     
@@ -918,6 +928,8 @@ static JSONKeyMapper* globalKeyMapper = nil;
                                                  userInfo:nil];
                     return nil;
                 }
+                
+                [tempDictionary setValue:value forKeyPath: keyPath];
             }
         }
     }
