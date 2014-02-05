@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "JSONModel@thehtb"
-  s.version      = "0.9.1"
+  s.version      = "0.9.2"
   s.summary      = "The High Technology Bureau FORK of JSONModel"
   s.description  =  "The High Technology Bureau FORK of JSONModel: Magical Data Modelling Framework for JSON. Create rapidly powerful, atomic and smart data model classes."
   s.homepage     = "https://github.com/thehtb/JSONModel"
