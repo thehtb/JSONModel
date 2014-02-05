@@ -31,10 +31,19 @@ extern BOOL isNull(id value)
 {
     self = [super init];
     if (self) {
-        _primitivesNames = @{@"f":@"float", @"i":@"int", @"d":@"double", @"l":@"long", @"c":@"BOOL", @"s":@"short", @"q":@"long",
-                             //and some famos aliases of primitive types
-                             // BOOL is now "B" on iOS __LP64 builds
-                             @"I":@"NSInteger", @"B":@"BOOL"};
+        _primitivesNames = @{@"f": @"float",
+                             @"i": @"int",
+                             @"d": @"double",
+                             @"l": @"long",
+                             @"c": @"BOOL", // actually it's char, but that's *mostly* used for BOOL on 32 bit runtimes...
+                             @"s": @"short",
+                             @"q": @"long",
+
+                             @"I": @"NSInteger",
+                             @"Q": @"NSInteger",
+                             @"L": @"NSInteger",
+                             @"B": @"BOOL"
+                             };
     }
     return self;
 }
