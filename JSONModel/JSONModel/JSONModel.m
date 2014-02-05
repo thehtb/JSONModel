@@ -335,7 +335,8 @@ static JSONKeyMapper* globalKeyMapper = nil;
                     
                     if ([valueTransformer respondsToSelector:directTransformerSelector])
                     {
-                        objc_msgSend(valueTransformer, directTransformerSelector, property.name, self, jsonValue);
+                        void (*objc_msgSendTyped)(id, SEL, id, id, id) = (void*)objc_msgSend;
+                        objc_msgSendTyped(valueTransformer, directTransformerSelector, property.name, self, jsonValue);
                     }
                     else if ([valueTransformer respondsToSelector:selector]) {
                         
